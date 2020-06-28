@@ -3,19 +3,19 @@ package com.reactlibrary;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.Promise;
 
 public class SubstrateSignModule extends ReactContextBaseJavaModule {
 
     private final ReactApplicationContext reactContext;
 
+    static {
+        System.loadLibrary("signer");
+    }
+
     public SubstrateSignModule(ReactApplicationContext reactContext) {
         super(reactContext);
         this.reactContext = reactContext;
-    }
-
-    static {
-        System.loadLibrary("signer");
     }
 
     private void rejectWithException(Promise promise, String code, Exception e) {
@@ -27,10 +27,6 @@ public class SubstrateSignModule extends ReactContextBaseJavaModule {
     @Override
     public String getName() {
         return "SubstrateSign";
-    }
-
-    public EthkeyBridge(ReactApplicationContext reactContext) {
-        super(reactContext);
     }
 
     @ReactMethod
