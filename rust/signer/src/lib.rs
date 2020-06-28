@@ -65,7 +65,7 @@ fn qrcode_bytes(data: &[u8]) -> crate::Result<String> {
 }
 
 export! {
-	@Java_io_parity_signer_EthkeyBridge_ethkeyBrainwalletAddress
+	@Java_com_reactlibrary_SubstrateSignModule_ethkeyBrainwalletAddress
 	fn ethkey_brainwallet_address(
 		seed: &str
 	) -> String {
@@ -79,7 +79,7 @@ export! {
 		out
 	}
 
-	@Java_io_parity_signer_EthkeyBridge_ethkeyBrainwalletBIP39Address
+	@Java_com_reactlibrary_SubstrateSignModule_ethkeyBrainwalletBIP39Address
 	fn ethkey_brainwallet_bip39_address(
 		seed: &str
 	) -> crate::Result<String> {
@@ -88,7 +88,7 @@ export! {
 		Ok(keypair.address().to_hex())
 	}
 
-	@Java_io_parity_signer_EthkeyBridge_ethkeyBrainwalletSign
+	@Java_com_reactlibrary_SubstrateSignModule_ethkeyBrainwalletSign
 	fn ethkey_brainwallet_sign(
 		seed: &str,
 		message: &str
@@ -101,7 +101,7 @@ export! {
 		Ok(signature.to_hex())
 	}
 
-	@Java_io_parity_signer_EthkeyBridge_ethkeyRlpItem
+	@Java_com_reactlibrary_SubstrateSignModule_ethkeyRlpItem
 	fn rlp_item(
 		rlp: &str,
 		position: u32
@@ -113,7 +113,7 @@ export! {
 			.ok_or(anyhow::anyhow!("index out of bounds"))
 	}
 
-	@Java_io_parity_signer_EthkeyBridge_ethkeyKeccak
+	@Java_com_reactlibrary_SubstrateSignModule_ethkeyKeccak
 	fn keccak256(
 		data: &str
 	) -> crate::Result<String> {
@@ -122,7 +122,7 @@ export! {
 		Ok(keccak(&data).to_hex())
 	}
 
-	@Java_io_parity_signer_EthkeyBridge_ethkeyBlake
+	@Java_com_reactlibrary_SubstrateSignModule_ethkeyBlake
 	fn blake(
 		data: &str
 	) -> crate::Result<String> {
@@ -131,7 +131,7 @@ export! {
 		Ok(blake2b(32, &[], &data).as_bytes().to_hex())
 	}
 
-	@Java_io_parity_signer_EthkeyBridge_ethkeyBlockiesIcon
+	@Java_com_reactlibrary_SubstrateSignModule_ethkeyBlockiesIcon
 	fn blockies_icon(
 		seed: String
 	) -> crate::Result<String> {
@@ -143,7 +143,7 @@ export! {
 		}
 	}
 
-	@Java_io_parity_signer_EthkeyBridge_ethkeyEthSign
+	@Java_com_reactlibrary_SubstrateSignModule_ethkeyEthSign
 	fn eth_sign(
 		data: &str
 	) -> crate::Result<String> {
@@ -158,7 +158,7 @@ export! {
 		Ok(res.to_hex())
 	}
 
-	@Java_io_parity_signer_EthkeyBridge_ethkeyRandomPhrase
+	@Java_com_reactlibrary_SubstrateSignModule_ethkeyRandomPhrase
 	fn random_phrase(
 		words_number:u32
 	) -> String {
@@ -170,7 +170,7 @@ export! {
 		mnemonic.into_phrase()
 	}
 
-	@Java_io_parity_signer_EthkeyBridge_ethkeyEncryptData
+	@Java_com_reactlibrary_SubstrateSignModule_ethkeyEncryptData
 	fn encrypt_data(
 		data: &str,
 		password: String
@@ -181,7 +181,7 @@ export! {
 		Ok(serde_json::to_string(&crypto)?)
 	}
 
-	@Java_io_parity_signer_EthkeyBridge_ethkeyDecryptData
+	@Java_com_reactlibrary_SubstrateSignModule_ethkeyDecryptData
 	fn decrypt_data(
 		data: &str,
 		password: String
@@ -193,14 +193,14 @@ export! {
 		Ok(String::from_utf8(decrypted)?)
 	}
 
-	@Java_io_parity_signer_EthkeyBridge_ethkeyQrCode
+	@Java_com_reactlibrary_SubstrateSignModule_ethkeyQrCode
 	fn qrcode(
 		data: &str
 	) -> crate::Result<String> {
 		qrcode_bytes(data.as_bytes())
 	}
 
-	@Java_io_parity_signer_EthkeyBridge_ethkeyQrCodeHex
+	@Java_com_reactlibrary_SubstrateSignModule_ethkeyQrCodeHex
 	fn qrcode_hex(
 		data: &str
 	) -> crate::Result<String> {
@@ -209,7 +209,7 @@ export! {
 		qrcode_bytes(&bytes)
 	}
 
-	@Java_io_parity_signer_EthkeyBridge_substrateBrainwalletAddress
+	@Java_com_reactlibrary_SubstrateSignModule_substrateBrainwalletAddress
 	fn substrate_brainwallet_address(
 		suri: &str,
 		prefix: u8
@@ -219,7 +219,7 @@ export! {
 		Ok(keypair.ss58_address(prefix))
 	}
 
-	@Java_io_parity_signer_EthkeyBridge_substrateBrainwalletSign
+	@Java_com_reactlibrary_SubstrateSignModule_substrateBrainwalletSign
 	fn substrate_brainwallet_sign(
 		suri: &str,
 		message: &str
@@ -232,7 +232,7 @@ export! {
 		Ok(signature.to_hex())
 	}
 
-	@Java_io_parity_signer_EthkeyBridge_schnorrkelVerify
+	@Java_com_reactlibrary_SubstrateSignModule_schnorrkelVerify
 	fn schnorrkel_verify(
 		suri: &str,
 		msg: &str,
@@ -247,7 +247,7 @@ export! {
 		keypair.verify_signature(&message, &signature)
 	}
 
-	@Java_io_parity_signer_EthkeyBridge_ethkeyDecryptDataRef
+	@Java_com_reactlibrary_SubstrateSignModule_ethkeyDecryptDataRef
 	fn decrypt_data_ref(
 		data: &str,
 		password: String
@@ -259,12 +259,12 @@ export! {
 		Ok(Box::into_raw(Box::new(String::from_utf8(decrypted).ok())) as i64)
 	}
 
-	@Java_io_parity_signer_EthkeyBridge_ethkeyDestroyDataRef
+	@Java_com_reactlibrary_SubstrateSignModule_ethkeyDestroyDataRef
 	fn destroy_data_ref(data_ref: i64) -> () {
 		unsafe { Box::from_raw(data_ref as *mut String) };
 	}
 
-	@Java_io_parity_signer_EthkeyBridge_ethkeyBrainwalletSignWithRef
+	@Java_com_reactlibrary_SubstrateSignModule_ethkeyBrainwalletSignWithRef
 	fn ethkey_brainwallet_sign_with_ref(
 		seed_ref: i64,
 		message: &str
@@ -280,7 +280,7 @@ export! {
 		Ok(signature.to_hex())
 	}
 
-	@Java_io_parity_signer_EthkeyBridge_ethkeySubstrateBrainwalletSignWithRef
+	@Java_com_reactlibrary_SubstrateSignModule_ethkeySubstrateBrainwalletSignWithRef
 	fn substrate_brainwallet_sign_with_ref(
 		seed_ref: i64,
 		suri_suffix: &str,
@@ -298,7 +298,7 @@ export! {
 		Ok(signature.to_hex())
 	}
 
-	@Java_io_parity_signer_EthkeyBridge_ethkeySubstrateWalletAddressWithRef
+	@Java_com_reactlibrary_SubstrateSignModule_ethkeySubstrateWalletAddressWithRef
 	fn substrate_address_with_ref(
 		seed_ref: i64,
 		suri_suffix: &str,
@@ -313,7 +313,7 @@ export! {
 		Ok(keypair.ss58_address(prefix))
 	}
 
-	@Java_io_parity_signer_EthkeyBridge_ethkeyBrainWalletAddressWithRef
+	@Java_com_reactlibrary_SubstrateSignModule_ethkeyBrainWalletAddressWithRef
 	fn brain_wallet_address_with_ref(
 		seed_ref: i64
 	) -> crate::Result<String> {
