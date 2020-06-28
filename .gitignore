@@ -40,3 +40,7 @@ local.properties
 buck-out/
 \.buckd/
 *.keystore
+
+#rust
+rust/signer/target
+libsigner.a
