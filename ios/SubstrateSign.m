@@ -1,6 +1,4 @@
-#import "SubstrateSign.h"
-
-@implementation SubstrateSign
+#import <React/RCTBridgeModule.h>
 
 @interface RCT_EXTERN_MODULE(SubstrateSign, NSObject)
 
@@ -14,8 +12,6 @@
 {
   return YES;
 }
-
-RCT_EXPORT_MODULE()
 
 RCT_EXTERN_METHOD(brainWalletAddress:(NSString*)seed resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 RCT_EXTERN_METHOD(brainWalletSecret:(NSString*)seed resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
