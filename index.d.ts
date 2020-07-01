@@ -44,4 +44,7 @@ declare module 'react-native-substrate-sign' {
 
 	export function substrateAddressWithRef(dataRef: number, suriSuffix: string, prefix: number): Promise<string>;
 
+	export function substrateSecret(suri: string): Promise<string>;
+
+	export function substrateSecretWithRef(dataRef: number, suriSuffix: string): Promise<string>;
 }

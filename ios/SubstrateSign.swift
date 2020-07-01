@@ -256,7 +256,6 @@ class SubstrateSign: NSObject {
     })
   }
 
-
   @objc func substrateAddressWithRef(_ seed_ref: Int64, suri_suffix: String, prefix: UInt32, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
     handle_error(
       resolve: resolve,
@@ -268,4 +267,29 @@ class SubstrateSign: NSObject {
         return val
     })
   }
+
+  @objc func substrateSecret(_ suri: String, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
+    handle_error(
+      resolve: resolve,
+      reject: reject,
+      get_result: { substrate_mini_secret_key($0, suri) },
+      success: { (res: Optional<UnsafePointer<CChar>>) -> String in
+        let val = String(cString: res!)
+        signer_destroy_string(res!)
+        return val
+    })
+  }
+
+  @objc func substrateSecretWithRef(_ seed_ref: Int64, suri_suffix: String, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
+    handle_error(
+      resolve: resolve,
+      reject: reject,
+      get_result: { substrate_mini_secret_key_with_ref($0, seed_ref, suri_suffix) },
+      success: { (res: Optional<UnsafePointer<CChar>>) -> String in
+        let val = String(cString: res!)
+        signer_destroy_string(res!)
+        return val
+    })
+  }
 }
+
