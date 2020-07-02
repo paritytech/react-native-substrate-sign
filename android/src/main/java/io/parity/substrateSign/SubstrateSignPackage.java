@@ -1,4 +1,4 @@
-package com.reactlibrary;
+package io.parity.substrateSign;
 
 import java.util.Arrays;
 import java.util.Collections;
