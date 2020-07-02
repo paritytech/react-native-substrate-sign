@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		67E5C7DD247AC12C00801670 /* libsigner.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 67E5C7DC247AC12C00801670 /* libsigner.a */; };
+		6784635124ADE8D3000990D6 /* libsigner.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6784635024ADE8D3000990D6 /* libsigner.a */; };
+		6784635424ADF355000990D6 /* libSubstrateSign.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 134814201AA4EA6300B7C361 /* libSubstrateSign.a */; };
 		67E5C7DF247AC14D00801670 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 67E5C7DE247AC14D00801670 /* libresolv.tbd */; };
 /* End PBXBuildFile section */
 
@@ -25,7 +26,7 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libSubstrateSign.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSubstrateSign.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		67E5C7DC247AC12C00801670 /* libsigner.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libsigner.a; path = ../rust/signer/target/universal/release/libsigner.a; sourceTree = "<group>"; };
+		6784635024ADE8D3000990D6 /* libsigner.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libsigner.a; sourceTree = "<group>"; };
 		67E5C7DE247AC14D00801670 /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/usr/lib/libresolv.tbd; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
 
@@ -34,8 +35,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6784635124ADE8D3000990D6 /* libsigner.a in Frameworks */,
 				67E5C7DF247AC14D00801670 /* libresolv.tbd in Frameworks */,
-				67E5C7DD247AC12C00801670 /* libsigner.a in Frameworks */,
+				6784635424ADF355000990D6 /* libSubstrateSign.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -61,8 +63,8 @@
 		675298932476D5BE00387331 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6784635024ADE8D3000990D6 /* libsigner.a */,
 				67E5C7DE247AC14D00801670 /* libresolv.tbd */,
-				67E5C7DC247AC12C00801670 /* libsigner.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -160,6 +162,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -186,7 +189,7 @@
 					"$(PROJECT_DIR)",
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 				VALID_ARCHS = "arm64 arm64e armv7 armv7s x86_64";
 			};
@@ -221,6 +224,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -253,17 +257,17 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(SRCROOT)/../rust/signer",
 					"$(SRCROOT)/../../../React/**",
 					"$(SRCROOT)/../../react-native/React/**",
+					"$(SRCROOT)",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
-					"$(SRCROOT)/../rust/signer",
+					"$(SRCROOT)",
 					"$(inherited)",
 				);
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = SubstrateSign;
 				SKIP_INSTALL = YES;
@@ -280,17 +284,17 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(SRCROOT)/../rust/signer",
 					"$(SRCROOT)/../../../React/**",
 					"$(SRCROOT)/../../react-native/React/**",
+					"$(SRCROOT)",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
-					"$(SRCROOT)/../rust/signer",
+					"$(SRCROOT)",
 					"$(inherited)",
 				);
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = SubstrateSign;
 				SKIP_INSTALL = YES;
