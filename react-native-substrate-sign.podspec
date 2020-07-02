@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
   s.authors      = { "Admin" => "admin@parity.io" }
   s.platforms    = { :ios => "9.0" }
   s.source       = { :git => "https://github.com/parity-tech/react-native-substrate-sign.git", :tag => "#{s.version}" }
-  s.ios.vendored_libraries = 'ios/libsigner.a'
+  s.vendored_libraries = 'ios/libsigner.a'
   s.source_files = "ios/**/*.{h,c,m,swift}"
   s.requires_arc = true
 

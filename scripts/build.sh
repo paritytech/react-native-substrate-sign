@@ -5,10 +5,6 @@ source ./scripts/variables.sh
 # Build iOS
 cd ./rust/signer
 
-cargo lipo --release
-
-mv "./target/universal/release/lib${LIB_NAME}.a" "../../ios/lib${LIB_NAME}.a"
-
 # Build android
 
 if [ -z ${NDK_HOME+x} ];
@@ -42,6 +38,15 @@ for i in "${!ANDROID_ARCHS[@]}";
     cp "./target/${ANDROID_ARCHS[$i]}/release/lib${LIB_NAME}.so" "../../android/src/main/jniLibs/${ANDROID_FOLDER[$i]}/lib${LIB_NAME}.so"
 done
 
+printf "Building iOS targets...";
+
+for i in "${IOS_ARCHS[@]}";
+  do
+    rustup target add "$i";
+    cargo build --target "$i" --release --no-default-features
+done
+
+lipo -create -output "../../ios/lib${LIB_NAME}.a" target/x86_64-apple-ios/release/libsigner.a target/armv7-apple-ios/release/libsigner.a target/armv7s-apple-ios/release/libsigner.a target/aarch64-apple-ios/release/libsigner.a
 
 
 #echo "hello tom" > read.txt
