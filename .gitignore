@@ -36,6 +36,9 @@ build/
 local.properties
 *.iml
 
+ios/.DS_Store
+android.iml
+android/.gradle
 # BUCK
 buck-out/
 \.buckd/

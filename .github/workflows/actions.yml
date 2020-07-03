@@ -1,0 +1,46 @@
+name:                   iOS Rust Build & Unit Test
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+      - stable
+jobs:
+  check:
+    name:               Check
+    runs-on:            macos-latest
+    steps:
+      - name:           Checkout sources
+        uses:           actions/checkout@v2
+        with:
+          fetch-depth:  50
+      - name:           Checkout submodules
+        shell:          bash
+        run:            git submodule update --init --recursive
+      - name:           Install 1.41.1 toolchain
+        uses:           actions-rs/toolchain@v1.0.5
+        with:
+          toolchain:    1.41.1
+          profile:      minimal
+          override:     true
+      - name:           Cache cargo index
+        uses:           actions/cache@v1.1.2
+        with:
+          path:         ~/.cargo/git
+          key:          ${{ runner.os }}-cargo-git-${{ hashFiles('**/Cargo.lock') }}
+      - name:           Cache sccache MacOS
+        uses:           actions/cache@v1.1.2
+        with:
+          path:         "/Users/runner/Library/Caches/Mozilla.sccache"
+          key:          ${{ runner.os }}-sccache-build-tests-${{ hashFiles('**/Cargo.lock') }}
+      - name:           Install sccache for MacOS
+        shell:          pwsh
+        run:            pwsh scripts/actions/install-sccache.ps1 ${{ runner.os}}
+      - name:           Rust Unit Test
+        run:            |
+          cd ./rust/signer
+          cargo test
+      - name:           Stop sccache
+        if:             always()
+        run:            sccache --stop-server
