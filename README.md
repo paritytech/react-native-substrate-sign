@@ -1,6 +1,6 @@
 # react-native-substrate-sign
 
-This React Native library packages practical crypto function written in Rust for Substrate, Polkadot and Ethereum. 
+This React Native library packages practical crypto functions written in Rust for Substrate, Polkadot and Ethereum. 
 
 ## Getting started
 

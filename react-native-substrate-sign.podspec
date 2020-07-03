@@ -9,14 +9,12 @@ Pod::Spec.new do |s|
   s.description  = <<-DESC
                   react-native-substrate-sign
                    DESC
-  s.homepage     = "https://github.com/parity-tech/react-native-substrate-sign"
+  s.homepage     = "https://github.com/paritytech/react-native-substrate-sign"
   s.license      = "GPL3"
   s.authors      = { "Admin" => "admin@parity.io" }
   s.platforms    = { :ios => "9.0" }
-  s.source       = { :git => "https://github.com/parity-tech/react-native-substrate-sign.git", :tag => "#{s.version}" }
+  s.source       = { :git => "https://github.com/paritytech/react-native-substrate-sign.git", :tag => "#{s.version}" }
   s.vendored_libraries = 'ios/libsigner.a'
-  s.static_framework = true
-  s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES' }
   s.source_files = "ios/**/*.{h,c,m,swift}"
   s.requires_arc = true
 
