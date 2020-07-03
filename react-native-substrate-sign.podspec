@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
                   react-native-substrate-sign
                    DESC
   s.homepage     = "https://github.com/paritytech/react-native-substrate-sign"
-  s.license      = "GPL3"
+  s.license      = "Apache-2"
   s.authors      = { "Admin" => "admin@parity.io" }
   s.platforms    = { :ios => "9.0" }
   s.source       = { :git => "https://github.com/paritytech/react-native-substrate-sign.git", :tag => "#{s.version}" }

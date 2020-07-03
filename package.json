@@ -25,7 +25,7 @@
     "name": "Admin",
     "email": "admin@parity.io"
   },
-  "license": "GPL3",
+  "license": "Apache-2",
   "licenseFilename": "LICENSE",
   "readmeFilename": "README.md",
   "peerDependencies": {
