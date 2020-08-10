@@ -1,7 +1,7 @@
 {
   "name": "react-native-substrate-sign",
   "title": "React Native Substrate Sign",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "The react native crypto library written in Rust for Substrate, Polkadot and Ethereum",
   "main": "index.js",
   "scripts": {
