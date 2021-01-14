@@ -39,10 +39,19 @@ jobs:
           path:         "/Users/runner/Library/Caches/Mozilla.sccache"
           key:          ${{ runner.os }}-sccache-build-tests-${{ hashFiles('**/Cargo.lock') }}
 
-      - name:           Install sccache
+      - name:           Install & start sccache
         shell:          bash
         run:            |
-          cargo install sccache --version=0.2.15
+          VERSION="0.2.15"
+          PLATFORM="x86_64-apple-darwin"
+          BASENAME="sccache-$VERSION-$PLATFORM"
+          URL="https://github.com/mozilla/sccache/releases/download/$VERSION/$BASENAME.tar.gz"
+          echo "Download sccache from " "$URL"
+          curl -LO "$URL"
+          tar -xzvf "$BASENAME.tar.gz"
+          ls $BASENAME/
+          . $BASENAME/sccache --start-server
+          echo "$(pwd)/$BASENAME" >> $GITHUB_PATH
           echo "RUSTC_WRAPPER=sccache" >> $GITHUB_ENV
 
       - name:           Rust Unit Test
