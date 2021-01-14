@@ -12,7 +12,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/paritytech/react-native-substrate-sign.git",
-    "baseUrl": "https://github.com/paritytecht/react-native-substrate-sign"
+    "baseUrl": "https://github.com/paritytech/react-native-substrate-sign"
   },
   "keywords": [
     "react-native",
