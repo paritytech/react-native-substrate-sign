@@ -42,7 +42,7 @@ jobs:
       - name:           Install & start sccache
         shell:          bash
         run:            |
-          VERSION="0.2.15"
+          VERSION="0.2.13"
           PLATFORM="x86_64-apple-darwin"
           BASENAME="sccache-$VERSION-$PLATFORM"
           URL="https://github.com/mozilla/sccache/releases/download/$VERSION/$BASENAME.tar.gz"
@@ -50,9 +50,9 @@ jobs:
           curl -LO "$URL"
           tar -xzvf "$BASENAME.tar.gz"
           ls $BASENAME/
-          . $BASENAME/sccache --start-server
-          echo "$(pwd)/$BASENAME" >> $GITHUB_PATH
-          echo "RUSTC_WRAPPER=sccache" >> $GITHUB_ENV
+          ./$BASENAME/sccache --start-server
+          echo "$(pwd)/$BASENAME" >> "$GITHUB_PATH"
+          echo "RUSTC_WRAPPER=sccache" >> "$GITHUB_ENV"
 
       - name:           Rust Unit Test
         run:            |
