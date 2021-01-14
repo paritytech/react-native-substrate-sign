@@ -15,32 +15,50 @@ jobs:
         uses:           actions/checkout@v2
         with:
           fetch-depth:  50
+
       - name:           Checkout submodules
         shell:          bash
         run:            git submodule update --init --recursive
+
       - name:           Install 1.41.1 toolchain
         uses:           actions-rs/toolchain@v1.0.5
         with:
           toolchain:    1.41.1
           profile:      minimal
           override:     true
+
       - name:           Cache cargo index
         uses:           actions/cache@v1.1.2
         with:
           path:         ~/.cargo/git
           key:          ${{ runner.os }}-cargo-git-${{ hashFiles('**/Cargo.lock') }}
+
       - name:           Cache sccache MacOS
         uses:           actions/cache@v1.1.2
         with:
           path:         "/Users/runner/Library/Caches/Mozilla.sccache"
           key:          ${{ runner.os }}-sccache-build-tests-${{ hashFiles('**/Cargo.lock') }}
-      - name:           Install sccache for MacOS
-        shell:          pwsh
-        run:            pwsh scripts/actions/install-sccache.ps1 ${{ runner.os}}
+
+      - name:           Install & start sccache
+        shell:          bash
+        run:            |
+          VERSION="0.2.13"
+          PLATFORM="x86_64-apple-darwin"
+          BASENAME="sccache-$VERSION-$PLATFORM"
+          URL="https://github.com/mozilla/sccache/releases/download/$VERSION/$BASENAME.tar.gz"
+          echo "Download sccache from " "$URL"
+          curl -LO "$URL"
+          tar -xzvf "$BASENAME.tar.gz"
+          ls $BASENAME/
+          ./$BASENAME/sccache --start-server
+          echo "$(pwd)/$BASENAME" >> "$GITHUB_PATH"
+          echo "RUSTC_WRAPPER=sccache" >> "$GITHUB_ENV"
+
       - name:           Rust Unit Test
         run:            |
           cd ./rust/signer
           cargo test
+
       - name:           Stop sccache
         if:             always()
         run:            sccache --stop-server
