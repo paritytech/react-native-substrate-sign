@@ -32,6 +32,8 @@ mod eth;
 mod export;
 mod result;
 mod sr25519;
+mod metadata;
+mod qr;
 
 const CRYPTO_ITERATIONS: u32 = 10240;
 
@@ -345,6 +347,19 @@ export! {
 		let _ = Box::into_raw(seed) as i64;
 		Ok(bytes.to_hex())
 	}
+
+	@Java_io_parity_substrateSign_SubstrateSignModule_getQrFrame
+	fn get_qr_frame(
+		qr: &str
+	) -> crate::Result<bool> {
+        Ok(true)
+	}
+
+	@Java_io_parity_substrateSign_SubstrateSignModule_startQrParser
+    fn start_qr_parser () -> crate::Result<String> {
+        Ok("blem".to_string())
+    }
+
 }
 
 ffi_support::define_string_destructor!(signer_destroy_string);
