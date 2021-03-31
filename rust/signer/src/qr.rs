@@ -47,6 +47,10 @@ pub fn spawn_qr_parser() -> String {
         RAPTOR_OBJECT_SENDER = Some(Mutex::new(tx));
     };
 
+    //This block just identifies the final message length;
+    //There is no further length compliance checks
+    //Lightweightness is chosen over robustness
+    //Let the user restart scan if it fails
     //TODO: unwrap
     let firstdata = rx.recv().unwrap();
     let firstmessage = QrMessage::new(firstdata);
@@ -62,11 +66,13 @@ pub fn spawn_qr_parser() -> String {
         if let Some(decoded) = decoder.get_result() {
             break str::from_utf8(&decoded).unwrap().to_string();
         } else {
-            let packet = raptorq::EncodingPacket::deserialize(&firstmessage.payload);
+            //TODO: same as above - unwrap
+            let qrpacket = rx.recv().unwrap();
+            let message = QrMessage::new(qrpacket);
+            let packet = raptorq::EncodingPacket::deserialize(&message.payload);
             decoder.add_new_packet(packet);
         }
     }    
-    
 }
 
 
