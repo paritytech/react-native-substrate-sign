@@ -13,6 +13,8 @@ use serde;
 
 #[cfg(test)]
 use std::thread;
+
+#[cfg(test)]
 use std::time::Duration;
 
 const CHUNK_SIZE: u16 = 512;

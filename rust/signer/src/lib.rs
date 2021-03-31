@@ -348,15 +348,14 @@ export! {
 		Ok(bytes.to_hex())
 	}
 
-	@Java_io_parity_substrateSign_SubstrateSignModule_getQrFrame
+	@Java_io_parity_substrateSign_SubstrateSignModule_qrparserGetQrFrame
 	fn get_qr_frame(
 		qr: &str
-	) -> crate::Result<bool> {
+	) -> () {
         qr::get_qr_frame(qr.to_string());
-        Ok(true)
 	}
 
-	@Java_io_parity_substrateSign_SubstrateSignModule_startQrParser
+	@Java_io_parity_substrateSign_SubstrateSignModule_qrparserStartQrParser
     fn start_qr_parser () -> crate::Result<String> {
         let answer = qr::spawn_qr_parser();
         Ok(answer)

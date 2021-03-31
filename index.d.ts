@@ -47,4 +47,8 @@ declare module 'react-native-substrate-sign' {
 	export function substrateSecret(suri: string): Promise<string>;
 
 	export function substrateSecretWithRef(dataRef: number, suriSuffix: string): Promise<string>;
+
+	export function getQrFrame(qr: string): Promise<void>;
+
+	export function startQrParser(): Promise<string>;
 }
