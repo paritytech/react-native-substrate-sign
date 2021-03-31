@@ -352,12 +352,14 @@ export! {
 	fn get_qr_frame(
 		qr: &str
 	) -> crate::Result<bool> {
+        qr::get_qr_frame(qr.to_string());
         Ok(true)
 	}
 
 	@Java_io_parity_substrateSign_SubstrateSignModule_startQrParser
     fn start_qr_parser () -> crate::Result<String> {
-        Ok("blem".to_string())
+        let answer = qr::spawn_qr_parser();
+        Ok(answer)
     }
 
 }
