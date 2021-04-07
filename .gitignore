@@ -47,3 +47,4 @@ buck-out/
 
 #rust
 rust/signer/target
+rust/qr-fountain-gen/target
