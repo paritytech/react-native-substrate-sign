@@ -26,6 +26,7 @@ use std::fs::File;
 use std::io;
 use qrcodegen::{QrCode, QrCodeEcc};
 use apng_encoder;
+use hex;
 
 //Chunk size is chosen to fit nicely in easy-to-recognize QR frame
 const CHUNK_SIZE: u16 = 256; //503
@@ -61,7 +62,7 @@ fn main() {
 
     // Compactify data
     println!("Compressing...");
-    let compressed_data = source_data.as_bytes().to_vec();
+    let compressed_data = hex::decode(source_data).expect("Not a hex string");
     let data_size = compressed_data.len() as u64;
     let data_size_vec = data_size.to_be_bytes();
     println!("appended data size: {:?}", data_size_vec);
@@ -78,7 +79,7 @@ fn main() {
         .map(|serpacket| [data_size_vec.to_vec(), serpacket].concat())
         .map(|qrpacket| {
             qr_frames_nervous_counter += 1;
-            println("Generating fountain codes: {}", qr_frames_nervous_counter);
+            println!("Generating fountain codes: {}", qr_frames_nervous_counter);
             QrCode::encode_binary(&qrpacket, QrCodeEcc::High).unwrap()
         })
         .collect();
