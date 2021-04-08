@@ -27,18 +27,19 @@ use std::io;
 use qrcodegen::{QrCode, QrCodeEcc};
 use apng_encoder;
 use hex;
+//use num_integer::Roots;
 
 //Chunk size is chosen to fit nicely in easy-to-recognize QR frame
-const CHUNK_SIZE: u16 = 256; //503
+const CHUNK_SIZE: u16 = 1079; //503
 
-//This is random not yet optimized value
-//TODO: optimize (probably sqrt(data_size/chunk_size))
-const REPAIR_PACKETS_PER_BLOCK: u32 = 15;
 //const SIZE: u16 = 113;
 
 // apng specs
 const WHITE_COLOR: u8 = 0xFF;
-const SCALING: u8 = 4;
+const SCALING: i32 = 4;
+const FPS_NOM: u16 = 1;
+const FPS_DEN: u16 = 4;
+const BORDER: i32 = 4;
 
 fn main() {
 
@@ -62,10 +63,13 @@ fn main() {
 
     // Compactify data
     println!("Compressing...");
+    //TODO: compress more!!!
     let compressed_data = hex::decode(source_data).expect("Not a hex string");
     let data_size = compressed_data.len() as u64;
     let data_size_vec = data_size.to_be_bytes();
+    let repair_packets_per_block = (data_size/(CHUNK_SIZE as u64)) as u32;
     println!("appended data size: {:?}", data_size_vec);
+    println!("repair packets count: {}", repair_packets_per_block);
 
     // Generate raptorq frames
     println!("Generating fountain frames...");
@@ -73,20 +77,22 @@ fn main() {
     let mut qr_frames_nervous_counter = 0;
 
     let raptor_encoder = raptorq::Encoder::with_defaults(&compressed_data, CHUNK_SIZE);
-    let frames: Vec<QrCode> = raptor_encoder.get_encoded_packets(REPAIR_PACKETS_PER_BLOCK)
+    let frames: Vec<QrCode> = raptor_encoder.get_encoded_packets(repair_packets_per_block)
         .iter()
-        .map(|packet| packet.serialize())
+        .map(|packet| packet.serialize())   //TODO: these packets have useless fileds that could be derived
         .map(|serpacket| [data_size_vec.to_vec(), serpacket].concat())
         .map(|qrpacket| {
             qr_frames_nervous_counter += 1;
             println!("Generating fountain codes: {}", qr_frames_nervous_counter);
-            QrCode::encode_binary(&qrpacket, QrCodeEcc::High).unwrap()
+            //println!("{:?}", qrpacket);
+            QrCode::encode_binary(&qrpacket, QrCodeEcc::Low).unwrap()
         })
         .collect();
 
     let frames_count = frames.len().try_into().unwrap();
     println!("Generating {} frames", frames_count);
-    let size: u32 = (frames[0].size() as u32) * (SCALING as u32); // size is always positive and small
+    let border_size = BORDER*SCALING;
+    let size: u32 = (frames[0].size() as u32) * (SCALING as u32) + 2*border_size as u32; // size is always positive and small
 
     let apng_meta = apng_encoder::Meta {
         width: size,
@@ -97,7 +103,7 @@ fn main() {
     };
 
     let apng_frame = apng_encoder::Frame {
-        delay: Some(apng_encoder::Delay::new(1, 10)),
+        delay: Some(apng_encoder::Delay::new(FPS_NOM, FPS_DEN)),
         ..Default::default()
     };
 
@@ -110,7 +116,7 @@ fn main() {
             let mut buffer: Vec<u8> = Vec::new();
             for x in 0..size {
                 for y in 0..size {
-                    buffer.push((qr.get_module(x as i32 / SCALING as i32, y as i32 / SCALING as i32) as u8) * WHITE_COLOR);
+                    buffer.push((qr.get_module(x as i32 / SCALING - BORDER, y as i32 / SCALING - BORDER) as u8) * WHITE_COLOR);
             }}
             apng_encoder.write_frame(&buffer, Some(&apng_frame), None, None).unwrap();
         });
