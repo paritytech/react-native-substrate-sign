@@ -238,27 +238,14 @@ public class SubstrateSignModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void getQrFrame(String qr, Promise promise) {
+    public void tryDecodeQrSequence(double size, String dataJson, Promise promise) {
         try {
-            qrparserGetQrFrame(qr);
-            promise.resolve(0);
-        } catch (Exception e) {
-            rejectWithException(promise, "get qr frame", e);
-        }
-    }
-
-    @ReactMethod
-    public void startQrParser(Promise promise) {
-        try {
-            String decoded = qrparserStartQrParser();
+            String decoded qrparserTryDecodeQrSequence(size, dataJson);
             promise.resolve(decoded);
         } catch (Exception e) {
-            rejectWithException(promise, "decode qr stream", e);
+            rejectWithException(promise, "try to decode qr goblet", e);
         }
     }
-
-
-
 
     private static native String ethkeyBrainwalletAddress(String seed);
     private static native String ethkeyBrainwalletBIP39Address(String seed);
@@ -284,6 +271,5 @@ public class SubstrateSignModule extends ReactContextBaseJavaModule {
     private static native String ethkeyBrainWalletAddressWithRef(long seedRef);
     private static native String ethkeySubstrateMiniSecretKey(String suri);
     private static native String ethkeySubstrateMiniSecretKeyWithRef(long seedRef, String suriSuffix);
-    private static native void qrparserGetQrFrame(String qr);
-    private static native String qrparserStartQrParser();
+    private static native String qrparserTryDecodeQrSequence(ling size, String dataJson);
 }

@@ -24,6 +24,7 @@ use rlp::decode_list;
 use rustc_hex::{FromHex, ToHex};
 use tiny_keccak::keccak256 as keccak;
 use tiny_keccak::Keccak;
+use serde_json;
 
 use eth::{KeyPair, PhraseKind};
 use result::{Error, Result};
@@ -348,18 +349,15 @@ export! {
 		Ok(bytes.to_hex())
 	}
 
-	@Java_io_parity_substrateSign_SubstrateSignModule_qrparserGetQrFrame
-	fn get_qr_frame(
-		qr: &str
-	) -> () {
-        qr::get_qr_frame(qr.to_string());
-	}
-
-	@Java_io_parity_substrateSign_SubstrateSignModule_qrparserStartQrParser
-    fn start_qr_parser () -> crate::Result<String> {
-        let answer = qr::spawn_qr_parser();
+	@Java_io_parity_substrateSign_SubstrateSignModule_qrparserTryDecodeQrSequence
+	fn try_decode_qr_sequence(
+        size: i64,
+		data_json: &str
+	) -> crate::Result<String> {
+        let data: Vec<&str> = serde_json::from_str(data_json).unwrap();
+        let answer = qr::parse_goblet(size as u64, data);
         Ok(answer)
-    }
+	}
 
 }
 

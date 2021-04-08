@@ -293,20 +293,11 @@ class SubstrateSign: NSObject {
   }
 }
 
-  @objc func getQrFrame(_ qr: Int64, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
+  @objc func tryDecodeQrSequence(_ size: Int64, dataJson: String, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
     handle_error(
       resolve: resolve,
       reject: reject,
-      get_result: { get_qr_frame($0, qr) },
-      // return zero. no cleanup
-      success: { return 0 })
-  }
-
-  @objc func startQrParser(_ resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
-    handle_error(
-      resolve: resolve,
-      reject: reject,
-      get_result: { start_qr_parser($0) },
+      get_result: { try_decode_qr_sequence($0, size, dataJson) },
       success: { (res: Optional<UnsafePointer<CChar>>) -> String in
         let val = String(cString: res!)
         signer_destroy_string(res!)

@@ -30,6 +30,7 @@ thiserror = "1.0"
 anyhow = "1.0"
 ffi-support = "0.4"
 raptorq = "1.6.3"
+hex = "0.4.3"
 
 [lib]
 name = "signer"
