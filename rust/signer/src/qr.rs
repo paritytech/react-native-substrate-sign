@@ -11,6 +11,11 @@ use hex;
 
 const CHUNK_SIZE: u16 = 1079;
 
+/// RN-generated string deserializer
+pub fn deserialize(data_string: &str) -> Vec<&str> {
+    data_string.split(",").collect()
+}
+
 /// QR data decoding bucket, returns decoded payload when done
 pub fn parse_goblet(size: u64, data: Vec<&str>) -> String {
     let mut decoder = raptorq::Decoder::new(
@@ -20,7 +25,14 @@ pub fn parse_goblet(size: u64, data: Vec<&str>) -> String {
         ));
     
     data.iter()
-        .map(|str_packet| hex::decode(str_packet).unwrap())
+        .map(|str_packet| {
+                if let Ok(ser_packet) = hex::decode(str_packet) {
+                    ser_packet
+                } else {
+                    Vec::new()
+                }
+            })
+        .filter(|ser_packet| !ser_packet.is_empty())
         .map(|ser_packet| raptorq::EncodingPacket::deserialize(&ser_packet))
         .for_each(|packet| decoder.add_new_packet(packet));
     
