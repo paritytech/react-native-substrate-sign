@@ -271,5 +271,5 @@ public class SubstrateSignModule extends ReactContextBaseJavaModule {
     private static native String ethkeyBrainWalletAddressWithRef(long seedRef);
     private static native String ethkeySubstrateMiniSecretKey(String suri);
     private static native String ethkeySubstrateMiniSecretKeyWithRef(long seedRef, String suriSuffix);
-    private static native String qrparserTryDecodeQrSequence(ling size, String dataJson);
+    private static native String qrparserTryDecodeQrSequence(long size, String dataJson);
 }
