@@ -240,7 +240,7 @@ public class SubstrateSignModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void tryDecodeQrSequence(double size, String dataJson, Promise promise) {
         try {
-            String decoded = qrparserTryDecodeQrSequence(size, dataJson);
+            String decoded = qrparserTryDecodeQrSequence(Double.doubleToRawLongBits(size), dataJson);
             promise.resolve(decoded);
         } catch (Exception e) {
             rejectWithException(promise, "try to decode qr goblet", e);
