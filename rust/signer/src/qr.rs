@@ -9,7 +9,7 @@ use raptorq;
 use std::str;
 use hex;
 
-const CHUNK_SIZE: u16 = 1079;
+const CHUNK_SIZE: u16 = 1076;
 
 /// RN-generated string deserializer
 pub fn deserialize(data_string: &str) -> Vec<&str> {
@@ -24,7 +24,7 @@ pub fn parse_goblet(size: u64, data: Vec<&str>) -> String {
             CHUNK_SIZE,
         ));
     
-    data.iter()
+    let mut packets: Vec<raptorq::EncodingPacket> = data.iter()
         .map(|str_packet| {
                 if let Ok(ser_packet) = hex::decode(str_packet) {
                     ser_packet
@@ -34,11 +34,20 @@ pub fn parse_goblet(size: u64, data: Vec<&str>) -> String {
             })
         .filter(|ser_packet| !ser_packet.is_empty())
         .map(|ser_packet| raptorq::EncodingPacket::deserialize(&ser_packet))
-        .for_each(|packet| decoder.add_new_packet(packet));
-    
-    if let Some(decoded) = decoder.get_result() {
+        .collect();
+
+    let mut result = None;
+    while !packets.is_empty() {
+        result = decoder.decode(packets.pop().unwrap());
+        if result != None {
+            break;
+        }
+    }
+
+    if let Some(decoded) = result {
         "0x".to_owned() + &hex::encode(decoded)
     } else { "".to_string() }
+    
 }
 
 /*
