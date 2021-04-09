@@ -30,7 +30,7 @@ use hex;
 //use num_integer::Roots;
 
 //Chunk size is chosen to fit nicely in easy-to-recognize QR frame
-const CHUNK_SIZE: u16 = 1079; //503
+const CHUNK_SIZE: u16 = 1076;
 
 //const SIZE: u16 = 113;
 
