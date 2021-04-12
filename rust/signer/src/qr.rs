@@ -64,8 +64,9 @@ mod tests {
   
     #[test]
     fn decode_qr_fountain_sample() {
+        let test_data_size: i64 = 4500;
         let test_data: Vec<&str> = deserialize(TEST_INPUT);
-        let test_answer = parse_goblet(4500 as u64, test_data);
+        let test_answer = parse_goblet(test_data_size as u64, test_data);
         assert_eq!(test_answer, TEST_OUTPUT.to_string());
     }
 }
