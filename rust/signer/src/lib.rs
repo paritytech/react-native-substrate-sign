@@ -355,6 +355,7 @@ export! {
 		data_json: &str
 	) -> crate::Result<String> {
         let data: Vec<&str> = qr::deserialize(data_json);
+        if size>0 {return Ok(size.to_string())};
         let answer = qr::parse_goblet(size as u64, data);
         Ok(answer)
 	}
