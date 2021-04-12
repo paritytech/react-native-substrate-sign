@@ -45,7 +45,7 @@ pub fn parse_goblet(size: u64, data: Vec<&str>) -> String {
     }
 
     if let Some(decoded) = result {
-        "0x".to_owned() + &hex::encode(decoded)
+        "0x".to_string() + &hex::encode(decoded)
     } else { "".to_string() }
     
 }
