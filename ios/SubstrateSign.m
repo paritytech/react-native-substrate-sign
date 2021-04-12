@@ -37,6 +37,5 @@ RCT_EXTERN_METHOD(substrateAddressWithRef:(int64_t)seedRef suri_suffix:(NSString
 RCT_EXTERN_METHOD(brainWalletAddressWithRef:(int64_t)seedRef resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 RCT_EXTERN_METHOD(substrateSecret:(NSString*)suri resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 RCT_EXTERN_METHOD(substrateSecretWithRef:(int64_t*)seedRef suri_suffix:(NSString*)suri_suffix resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
-RCT_EXTERN_METHOD(getQrFrame:(NSString*)qr resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
-RCT_EXTERN_METHOD(startQrParser:() resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+   RCT_EXTERN_METHOD(tryDecodeQrSequence:(NSInteger*)size dataJson:(NSString*)dataJson resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 @end
