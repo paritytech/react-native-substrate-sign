@@ -352,10 +352,11 @@ export! {
 	@Java_io_parity_substrateSign_SubstrateSignModule_qrparserTryDecodeQrSequence
 	fn try_decode_qr_sequence(
         size: u32,
-		data_json: &str
+        chunk_size: u32,
+		data: &str
 	) -> crate::Result<String> {
-        let data: Vec<&str> = qr::deserialize(data_json);
-        let answer = qr::parse_goblet(size as u64, data);
+        let data_vec: Vec<&str> = qr::deserialize(data);
+        let answer = qr::parse_goblet(size as u64, chunk_size as u16, data_vec);
         Ok(answer)
 	}
 

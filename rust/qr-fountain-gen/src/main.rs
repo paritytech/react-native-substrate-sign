@@ -30,7 +30,7 @@ use hex;
 //use num_integer::Roots;
 
 //Chunk size is chosen to fit nicely in easy-to-recognize QR frame
-const CHUNK_SIZE: u16 = 1076;
+const CHUNK_SIZE: u16 = 1072;
 
 //const SIZE: u16 = 113;
 
@@ -44,6 +44,7 @@ const BORDER: i32 = 4;
 fn main() {
 
     // Get data from env::args()
+    let chunk_size = CHUNK_SIZE; //placeholder for args parser
     println!("Reading input...");
     let mut source_data_string = String::new();
     io::stdin().read_line(&mut source_data_string).expect("Failed to read input");
@@ -56,9 +57,9 @@ fn main() {
     println!("Compressing...");
     //TODO: compress more!!!
     let compressed_data = hex::decode(source_data).expect("Not a hex string");
-    let data_size = compressed_data.len() as u64;
-    let data_size_vec = data_size.to_be_bytes();
-    let repair_packets_per_block = (data_size/(CHUNK_SIZE as u64)) as u32;
+    let data_size = compressed_data.len() as u64;   //upstream limited to u40, we will limit to u32
+    let data_size_vec = (data_size as u32).to_be_bytes();
+    let repair_packets_per_block = (data_size/(chunk_size as u64)) as u32;
     println!("appended data size: {:?}", data_size_vec);
     println!("repair packets count: {}", repair_packets_per_block);
 
@@ -67,11 +68,13 @@ fn main() {
     let mut output_file = File::create(filename_out).unwrap();
     let mut qr_frames_nervous_counter = 0;
 
-    let raptor_encoder = raptorq::Encoder::with_defaults(&compressed_data, CHUNK_SIZE);
+    let raptor_encoder = raptorq::Encoder::with_defaults(&compressed_data, chunk_size);
+    let frame_size = raptor_encoder.get_config().symbol_size().to_be_bytes();
+    println!("appended frame size: {:?}", frame_size);
     let frames: Vec<QrCode> = raptor_encoder.get_encoded_packets(repair_packets_per_block)
         .iter()
         .map(|packet| packet.serialize())   //TODO: these packets have useless fileds that could be derived
-        .map(|serpacket| [data_size_vec.to_vec(), serpacket].concat())
+        .map(|serpacket| [frame_size.to_vec(), data_size_vec.to_vec(), serpacket].concat())
         .map(|qrpacket| {
             qr_frames_nervous_counter += 1;
             println!("Generating fountain codes: {}", qr_frames_nervous_counter);
@@ -80,6 +83,7 @@ fn main() {
         })
         .collect();
 
+    // Generate video frames
     let frames_count = frames.len().try_into().unwrap();
     println!("Generating {} frames", frames_count);
     let border_size = BORDER*SCALING;
@@ -112,9 +116,6 @@ fn main() {
             apng_encoder.write_frame(&buffer, Some(&apng_frame), None, None).unwrap();
         });
     apng_encoder.finish().unwrap();
-
-    // Save gif
-    println!("Saving file...");
 
     println!("Done!");
 }

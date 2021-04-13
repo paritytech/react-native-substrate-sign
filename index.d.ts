@@ -48,5 +48,5 @@ declare module 'react-native-substrate-sign' {
 
 	export function substrateSecretWithRef(dataRef: number, suriSuffix: string): Promise<string>;
 
-	export function tryDecodeQrSequence(size: number, dataJson: string): Promise<string>;
+	export function tryDecodeQrSequence(size: number, chunk_size: number, data: string): Promise<string>;
 }
