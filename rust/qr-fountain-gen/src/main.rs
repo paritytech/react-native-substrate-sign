@@ -40,6 +40,7 @@ const SCALING: i32 = 4;
 const FPS_NOM: u16 = 1;
 const FPS_DEN: u16 = 4;
 const BORDER: i32 = 4;
+const MULTIVERSION_PREFIX: u8 = 1;
 
 fn main() {
 
@@ -74,7 +75,7 @@ fn main() {
     let frames: Vec<QrCode> = raptor_encoder.get_encoded_packets(repair_packets_per_block)
         .iter()
         .map(|packet| packet.serialize())   //TODO: these packets have useless fileds that could be derived
-        .map(|serpacket| [frame_size.to_vec(), data_size_vec.to_vec(), serpacket].concat())
+        .map(|serpacket| [[MULTIVERSION_PREFIX].to_vec(), frame_size.to_vec(), data_size_vec.to_vec(), serpacket].concat())
         .map(|qrpacket| {
             qr_frames_nervous_counter += 1;
             println!("Generating fountain codes: {}", qr_frames_nervous_counter);
