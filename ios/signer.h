@@ -83,3 +83,7 @@ const char* brain_wallet_address_with_ref(struct ExternError*, int64_t seed_ref)
 const char* substrate_mini_secret_key_with_ref(struct ExternError*, int64_t seed_ref, const char* suri_suffix);
 
 const char* substrate_mini_secret_key(struct ExternError*, const char* suri);
+
+// qr fountain decoder
+const char * try_decode_qr_sequence(struct ExternError*, int size, int chunk_size, const char* data_json);
+

@@ -52,7 +52,7 @@ After update the rust code, you need to change the following files for updating 
 - ios/signer.h
 - ios/SubstrateSign.m
 - ios/SubstrateSign.swift
-- android/src/main/java/com/reactlibrary/SubstrateSignModule.java
+- android/src/main/java/io/parity/substrateSign/SubstrateSignModule.java
 - index.js
 - index.d.ts
 

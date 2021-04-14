@@ -24,6 +24,7 @@ use rlp::decode_list;
 use rustc_hex::{FromHex, ToHex};
 use tiny_keccak::keccak256 as keccak;
 use tiny_keccak::Keccak;
+use serde_json;
 
 use eth::{KeyPair, PhraseKind};
 use result::{Error, Result};
@@ -32,6 +33,8 @@ mod eth;
 mod export;
 mod result;
 mod sr25519;
+mod metadata;
+mod qr;
 
 const CRYPTO_ITERATIONS: u32 = 10240;
 
@@ -345,6 +348,18 @@ export! {
 		let _ = Box::into_raw(seed) as i64;
 		Ok(bytes.to_hex())
 	}
+
+	@Java_io_parity_substrateSign_SubstrateSignModule_qrparserTryDecodeQrSequence
+	fn try_decode_qr_sequence(
+        size: u32,
+        chunk_size: u32,
+		data: &str
+	) -> crate::Result<String> {
+        let data_vec: Vec<&str> = qr::deserialize(data);
+        let answer = qr::parse_goblet(size as u64, chunk_size as u16, data_vec);
+        Ok(answer)
+	}
+
 }
 
 ffi_support::define_string_destructor!(signer_destroy_string);

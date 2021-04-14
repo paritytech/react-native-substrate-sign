@@ -293,3 +293,17 @@ class SubstrateSign: NSObject {
   }
 }
 
+  @objc func tryDecodeQrSequence(_ size: NSInteger, chunk_size: NSInteger, data: String, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
+    handle_error(
+      resolve: resolve,
+      reject: reject,
+      get_result: { try_decode_qr_sequence($0, Int32(size), Int32(chunk_size), data) },
+      success: { (res: Optional<UnsafePointer<CChar>>) -> String in
+        let val = String(cString: res!)
+        signer_destroy_string(res!)
+        return val
+    })
+  }
+}
+
+
