@@ -40,7 +40,6 @@ const SCALING: i32 = 4;
 const FPS_NOM: u16 = 1;
 const FPS_DEN: u16 = 4;
 const BORDER: i32 = 4;
-const MULTIVERSION_PREFIX: u8 = 1;
 
 fn main() {
 
@@ -58,8 +57,9 @@ fn main() {
     println!("Compressing...");
     //TODO: compress more!!!
     let compressed_data = hex::decode(source_data).expect("Not a hex string");
-    let data_size = compressed_data.len() as u64;   //upstream limited to u40, we will limit to u32
-    let data_size_vec = (data_size as u32).to_be_bytes();
+    let data_size = compressed_data.len() as u64;
+    assert!(data_size < 0x80000000);   //upstream limited to u40, we will limit to u31
+    let data_size_vec = ((data_size + 0x80000000) as u32).to_be_bytes();
     let repair_packets_per_block = (data_size/(chunk_size as u64)) as u32;
     println!("appended data size: {:?}", data_size_vec);
     println!("repair packets count: {}", repair_packets_per_block);
@@ -70,12 +70,10 @@ fn main() {
     let mut qr_frames_nervous_counter = 0;
 
     let raptor_encoder = raptorq::Encoder::with_defaults(&compressed_data, chunk_size);
-    let frame_size = raptor_encoder.get_config().symbol_size().to_be_bytes();
-    println!("appended frame size: {:?}", frame_size);
     let frames: Vec<QrCode> = raptor_encoder.get_encoded_packets(repair_packets_per_block)
         .iter()
         .map(|packet| packet.serialize())   //TODO: these packets have useless fileds that could be derived
-        .map(|serpacket| [[MULTIVERSION_PREFIX].to_vec(), frame_size.to_vec(), data_size_vec.to_vec(), serpacket].concat())
+        .map(|serpacket| [data_size_vec.to_vec(), serpacket].concat())
         .map(|qrpacket| {
             qr_frames_nervous_counter += 1;
             println!("Generating fountain codes: {}", qr_frames_nervous_counter);
